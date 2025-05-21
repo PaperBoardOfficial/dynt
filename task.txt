@@ -1,0 +1,78 @@
+Financial Reconciliation System for SMEs: Use Cases & Solutions
+Core Reconciliation Use Cases 0. Dynt and Bank Files Reconciliation
+Use Case 0: Match Bank Transactions imported in Dynt vs by uploading directly the CSV file from your bank statement
+System analysis the bank data in Dynt and compare against the CSV file manual uploaded.
+Creates a diff overview to understand there are some discrepancies (these can be due to issues in Dynt API / or our 3rd party sending duplicate transactions. In fact right now for May 2025 we have this issue, if uploading the files in Claude It detects quite easily, so we need something like that built internally.
+We already support uploading manual CSV, so I believe we should build a solution on top of the current solution that basically makes the comparison in “count of transactions”, “debit in euro amount” and “credit in euro amount”. This way we can already detect any possible discrepancy. (see report below).
+
+1. Bank Transaction Reconciliation
+   Use Case 1A: Match Bank Transactions to Invoices (Outgoing)
+   System identifies bank transactions that match bill payments to suppliers
+   Matching criteria: amount, date range, recipient details, reference numbers
+   Solution: Automated matching algorithm with confidence scoring, manual review for low-confidence matches
+   Use Case 1B: Match Bank Transactions to Invoices (Incoming)
+   System identifies bank transactions that match customer payments
+   Matching criteria: amount, date range, payer details, invoice numbers
+   Solution: Pattern recognition to handle partial payments, installments, or combined payments
+   Use Case 1C: Match Bank Transactions to Employee Expenses
+   System identifies bank transactions that match employee reimbursements
+   Matching criteria: amount, date range, employee details, expense report IDs
+   Solution: Expense workflow triggers expectation of specific bank transaction
+2. Employee Expense Reconciliation
+   Use Case 2A: Match Corporate Card Transactions to Expense Reports
+   System matches card transactions with submitted expense reports
+   Matching criteria: amount, date, merchant, expense category
+   Solution: Employee-driven matching during expense submission with validation rules
+   Use Case 2B: Match Reimbursement Requests to Bank Payments
+   System tracks approved expense reimbursements to payment execution
+   Matching criteria: employee ID, total amount, approval date, payment date
+   Solution: Payment batching system that maintains links to originating expenses
+3. Accounts Payable Reconciliation
+   Use Case 3A: Match Supplier Bills to Purchase Orders (we are still missing PO Numbers in our Backend, but coming soon)
+   System validates whether invoices match expected purchase orders
+   Matching criteria: supplier ID, PO number, line items, quantities, amounts
+   Solution: Three-way matching (PO, goods receipt, invoice) with variance thresholds
+   Use Case 3B: Match Supplier Bills to Bank Payments
+   System confirms bills have been paid correctly
+   Matching criteria: supplier ID, invoice number, amount, payment date
+   Solution: Payment reconciliation dashboard with aging and exception reports
+4. Accounts Receivable Reconciliation
+   Use Case 4A: Match Customer Invoices to Bank Receipts
+   System confirms whether customer invoices have been paid
+   Matching criteria: customer ID, invoice number, amount, payment date
+   Solution: Customer statement generation with automatic payment allocation
+   Use Case 4B: Match Partial/Combined Payments to Multiple Invoices
+   System handles complex payment scenarios (partial payments, overpayments, combined payments)
+   Matching criteria: customer ID, payment amount vs. outstanding invoices
+   Solution: Smart allocation algorithm with rules for payment application priority
+   Proof Attachment Use Cases
+5. Document Association Requirements
+   Use Case 5A: Attach Receipts to Employee Expenses
+   System links receipt images/PDFs to specific expense line items
+   Verification criteria: date, merchant, amount, expense policy compliance
+   Solution: Mobile capture with OCR to extract and validate receipt data
+   Use Case 5B: Attach Contracts to Recurring Invoices
+   System links master service agreements to related invoices
+   Verification criteria: contract validity, service periods, rate compliance
+   Solution: Contract repository with metadata linking to invoicing system
+   Use Case 5C: Attach Delivery Confirmations to Customer Invoices
+   System links proof of delivery to outgoing invoices
+   Verification criteria: delivery date, recipient, quantities, condition
+   Solution: Delivery workflow integration with invoice generation
+   Use Case 5D: Attach Supplier Documentation to Bills
+   System links supporting documents to supplier invoices
+   Verification criteria: compliance with purchasing policies, authorization
+   Solution: Document management system with tagging and workflow approval
+   Exception Handling Use Cases
+   Use Case 6A: Identify Unmatched Bank Transactions
+   System flags transactions without corresponding documents
+   Resolution workflow: categorization, investigation, documentation creation
+   Solution: Exception dashboard with aging and priority-based workflow
+   Use Case 6B: Identify Unmatched Invoices/Bills
+   System flags invoices without payment transactions
+   Resolution workflow: payment status verification, follow-up actions
+   Solution: Aging reports with payment prediction and collection tools
+   Use Case 6C: Handle Reconciliation Disputes
+   System supports resolution of disputed transactions or amounts
+   Resolution workflow: evidence collection, communication, adjustment processing
+   Solution: Dispute case management with audit trail and resolution tracking
